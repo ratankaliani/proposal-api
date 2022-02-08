@@ -34,27 +34,23 @@ export default async function handler(req, res) {
             platformsSet = new Set(platforms);
         }
 
+        var proposalMethods = {
+            "aave": getAaveProposals,
+            "compound": getCompoundProposals,
+            "uniswap": getUniswapProposals
+        }
+
         let allProposals = []
-        if (checkPlatforms == false || 'aave' in platformsSet) {
-            let aaveProposals = await getAaveProposals(blockNumber);
-            if (aaveProposals.length > 0) {
-                allProposals.push(...aaveProposals);
+        for (var platform in proposalMethods.keys()) {
+            if (checkPlatforms == false || platform in platformsSet) {
+                var proposalMethod = proposalMethods[platform];
+                let platformProposals = await proposalMethod(blockNumber);
+                if (platformProposals.length > 0) {
+                    allProposals.push(...platformProposals);
+                }
             }
         }
-
-        if (checkPlatforms == false || 'compound' in platformsSet) {
-            let compoundProposals = await getCompoundProposals(blockNumber);
-            if (compoundProposals.length > 0) {
-                allProposals.push(...compoundProposals);
-            }
-        }
-
-        if (checkPlatforms == false || 'uniswap' in platformsSet) {
-            let uniswapProposals = await getUniswapProposals(blockNumber);
-            if (uniswapProposals.length > 0) {
-                allProposals.push(...uniswapProposals);
-            }
-        }
+        
         return res.status(200).json({proposals: allProposals, blockNumber: blockNumber});
     }
     catch (error) {
