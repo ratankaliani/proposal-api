@@ -2,7 +2,7 @@
 import axios from "axios";
 
 // Inputs optional for req.query
-// platforms (default is all), can be passed as array or single value
+// platforms (required), can be passed as array or single value
 // blockNumber (default is currentBlock), must be int
 export default async function handler(req, res) {
     try {
