@@ -18,7 +18,7 @@ You can start editing the page by modifying `pages/index.js`. The page auto-upda
 The two parameters are:
 
 blockNumber (optional)
-platforms
+platforms (optional)
 
 The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
 
