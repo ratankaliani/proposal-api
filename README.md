@@ -24,6 +24,6 @@ The `pages/api` directory is mapped to `/api/*`. Files in this directory are tre
 
 ## Deploy on Vercel
 
-Currently deployment is at [this site](https://proposal-api.vercel.app/)
+Currently deployment is at https://proposal-api.vercel.app/
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
