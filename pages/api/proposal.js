@@ -34,17 +34,15 @@ export default async function handler(req, res) {
             platformsSet = new Set(platforms);
         }
 
-        var proposalMethods = {
-            "aave": getAaveProposals,
-            "compound": getCompoundProposals,
-            "uniswap": getUniswapProposals
-        }
+        var proposalMethods = new Map();
+        proposalMethods.set("aave", getAaveProposals);
+        proposalMethods.set("compound", getCompoundProposals);
+        proposalMethods.set("uniswap", getUniswapProposals);
 
         let allProposals = []
-        for (var platform in proposalMethods.keys()) {
+        for (const [platform, getPlatformProposals] of proposalMethods.entries()) {
             if (checkPlatforms == false || platform in platformsSet) {
-                var proposalMethod = proposalMethods[platform];
-                let platformProposals = await proposalMethod(blockNumber);
+                let platformProposals = await getPlatformProposals(blockNumber);
                 if (platformProposals.length > 0) {
                     allProposals.push(...platformProposals);
                 }
