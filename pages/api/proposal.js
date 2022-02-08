@@ -34,7 +34,7 @@ export default async function handler(req, res) {
             platformsSet = new Set(platforms);
         }
 
-        proposalMethods = {
+        var proposalMethods = {
             "aave": getAaveProposals,
             "compound": getCompoundProposals,
             "uniswap": getUniswapProposals
