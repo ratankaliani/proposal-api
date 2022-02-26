@@ -20,7 +20,6 @@ export default async function handler(req, res) {
             blockNumber = await getBlockNumber();
         }
         
-        
         let checkPlatforms = false;
         let platformsSet = new Set();
         if ('platforms' in req.query) {
