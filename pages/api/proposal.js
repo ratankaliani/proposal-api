@@ -2,10 +2,11 @@
 import axios from "axios";
 
 // Inputs optional for req.query
-// platforms (default is all), can be passed as array or single value
+// platforms (required), can be passed as array or single value
 // blockNumber (default is currentBlock), must be int
 export default async function handler(req, res) {
     try {
+
         var blockNumber;
         if ('blockNumber' in req.query) {
             blockNumber = parseInt(req.query.blockNumber);
@@ -25,25 +26,30 @@ export default async function handler(req, res) {
         if ('platforms' in req.query) {
             checkPlatforms = true;
             var platforms = req.query.platforms;
+            // Passed in multiple platforms
             if (typeof(platforms) == 'object') {
                 for (var i = 0; i < platforms.length; i++) {
+                    console.log(platforms[i]);
                     platforms[i] = platforms[i].toLowerCase();
                 }
+                platformsSet = new Set(platforms);
             }
-            platformsSet = new Set(platforms);
+            // Passed in one platform as string
+            if (typeof(platforms) == 'string') {
+                platformsSet = new Set();
+                platformsSet.add(platforms.toLowerCase());
+            }
         }
 
-        var proposalMethods = {
-            "aave": getAaveProposals,
-            "compound": getCompoundProposals,
-            "uniswap": getUniswapProposals
-        }
+        var proposalMethods = new Map();
+        proposalMethods.set('aave', getAaveProposals);
+        proposalMethods.set('compound', getCompoundProposals);
+        proposalMethods.set('uniswap', getUniswapProposals);
 
         let allProposals = []
-        for (var platform in proposalMethods.keys()) {
-            if (checkPlatforms == false || platform in platformsSet) {
-                var proposalMethod = proposalMethods[platform];
-                let platformProposals = await proposalMethod(blockNumber);
+        for (const [platform, getPlatformProposals] of proposalMethods.entries()) {
+            if (checkPlatforms == false || platformsSet.has(platform)) {
+                let platformProposals = await getPlatformProposals(blockNumber);
                 if (platformProposals.length > 0) {
                     allProposals.push(...platformProposals);
                 }
@@ -57,8 +63,6 @@ export default async function handler(req, res) {
         return res.end();
     }
     
-  
-
 }
 
 // Returns integer of current block number
