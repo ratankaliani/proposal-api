@@ -56,7 +56,7 @@ export default async function handler(req, res) {
             }
         }
         
-        return res.status(200).json({proposals: allProposals, blockNumber: blockNumber});
+        return res.status(200).json({proposals: allProposals});
     }
     catch (error) {
         console.error(error);
