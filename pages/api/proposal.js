@@ -115,7 +115,7 @@ async function getAaveProposals(blockNumber) {
         if (state in stateDefinition) {
             state = stateDefinition[state];
         }
-        var link = "https://app.aave.com/#/" + id + "-" + ipfsHash;
+        var link = "https://app.aave.com/#/governance" + id + "-" + ipfsHash;
         var proposalJSON = {
             title: title,
             id: id,
