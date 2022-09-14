@@ -200,7 +200,7 @@ async function getCompoundProposals(blockNumber) {
         description
         }
     }`;
-    const response = await axios.post('https://api.thegraph.com/subgraphs/name/arr00/compound-governance-2', {
+    const response = await axios.post('https://api.compound.finance/api/v2/governance/proposals', {
         query: query 
     },
     {
@@ -208,23 +208,32 @@ async function getCompoundProposals(blockNumber) {
             'Content-Type': 'application/json'
         }
     });
-    var allProposals = response.data.data.proposals
+    // console.log(response.data.proposals)
+    // console.log(response.data.proposals[0].states)
+    var allProposals = response.data.proposals
     var compoundProposals = [];
 
-    for (var i in response.data.data.proposals) {
+    for (var i = 0; i < allProposals.length; i++) {
         var proposal = allProposals[i];
+        // console.log(proposal)
+        // Get most recent state update
+        var most_recent_state = proposal.states[proposal.states.length - 1];
 
-        var endBlock = parseInt(proposal.endBlock);
-        if (endBlock < blockNumber) {
+        // console.log(most_recent_state.end_time)
+        // var startTime = parseInt(most_recent_state.start_time);
+        var endTime = most_recent_state.end_time;
+        
+
+        if (endTime == null) {
+            // console.log(startTime)
             break;
         }
 
         var id = proposal.id;
         var platform = "Compound";
-        var state = proposal.status;
+        var state = most_recent_state.state;
 
-        var description = proposal.description;
-        var title = description.split("\n")[0].substring(2);
+        var title = proposal.title;
 
 
         var link = "https://compound.finance/governance/proposals/" + id;
@@ -234,7 +243,8 @@ async function getCompoundProposals(blockNumber) {
             platform: platform,
             state: state.toLowerCase(),
             link: link,
-            endBlock: endBlock
+            // TODO: Compound API does not have endBlock, add endBlock back into response
+            endBlock: null
         }
         compoundProposals.push(proposalJSON);
     }
