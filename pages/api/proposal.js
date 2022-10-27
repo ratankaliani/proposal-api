@@ -8,6 +8,8 @@ export default async function handler(req, res) {
     try {
 
         var blockNumber;
+        // Request wants to query all proposals over a given blockNumber
+        // Not functional for some endpoints as some API's do not have blockNumbers
         if ('blockNumber' in req.query) {
             blockNumber = parseInt(req.query.blockNumber);
             if (isNaN(blockNumber)) {
@@ -23,6 +25,7 @@ export default async function handler(req, res) {
         
         let checkPlatforms = false;
         let platformsSet = new Set();
+        // Request wants to query only select platforms (ex. Compound) proposals
         if ('platforms' in req.query) {
             checkPlatforms = true;
             var platforms = req.query.platforms;
@@ -42,6 +45,8 @@ export default async function handler(req, res) {
         }
 
         var proposalMethods = new Map();
+
+        // List of platforms & corresponding methods to query proposals for a platform
         proposalMethods.set('aave', getAaveProposals);
         proposalMethods.set('compound', getCompoundProposals);
         proposalMethods.set('uniswap', getUniswapProposals);
