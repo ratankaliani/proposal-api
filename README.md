@@ -18,6 +18,10 @@ You can start editing the page by modifying `pages/index.js`. The page auto-upda
 
 [API routes] The API can be found at http://localhost:3000/api/proposal
 
+
+
+
+
 # API
 
 ## Add Protocols to the API (Easy)
@@ -26,11 +30,16 @@ Create a method to query proposals from an API endpoint, [similar to this for Aa
 
 Add platform title [here](https://github.com/ratankaliani/proposal-api/blob/main/pages/api/proposal.js#L50).
 
+Test in local dev environment to see if the API (localhost:3000/api/proposal) is receiving proposals from the new protocol.
+
 ## Modular Changes to API (Medium)
 
 TBD!
 
 ### PLEASE CREATE A BRANCH & THEN MAKE A PR AFTER DOING LOCAL TESTING!!
+
+
+
 
 ## Query Parameters
 
@@ -40,9 +49,17 @@ TBD!
 
 The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
 
+
+
+
+
 # Frontend
 
 TBD!
+
+
+
+
 
 # Deployment
 
