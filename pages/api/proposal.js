@@ -50,6 +50,7 @@ export default async function handler(req, res) {
         proposalMethods.set('aave', getAaveProposals);
         proposalMethods.set('compound', getCompoundProposals);
         proposalMethods.set('uniswap', getUniswapProposals);
+        proposalMethods.set('maker', getMakerProposals);
 
         let allProposals = []
         for (const [platform, getPlatformProposals] of proposalMethods.entries()) {
@@ -254,4 +255,105 @@ async function getCompoundProposals(blockNumber) {
         compoundProposals.push(proposalJSON);
     }
     return compoundProposals;
+}
+
+// Query all MakerDAO proposals, and return JSON objects for each proposal
+// Query executive and polls separately 
+// API documentation at: https://vote.makerdao.com/api-docs
+async function getMakerProposals(blockNumber) {
+    var makerProposals = [];
+    // executive proposals 
+    var query = `{
+        about 
+        content
+        title
+        proposalBlurb
+        key
+        address
+        date
+        active
+        proposalLink
+        spellData
+    }`;
+    const exec_response = await axios.post('https://vote.makerdao.com/api/executive?start=0&limit=10', {
+        query: query 
+    },
+    {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+    var allProposals = exec_response.data
+
+    for (var i in allProposals) {
+        var proposal = allProposals[i];
+
+        var title = proposal.title;
+        var id = proposal.address;
+        var platform = "Maker";
+        var state = proposal.active;
+        var link = proposal.proposalLink;
+        var proposalJSON = {
+            title: title,
+            id: id,
+            platform: platform,
+            state: state.toLowerCase(),
+            link: link,
+            endBlock: endBlock
+        }
+        makerProposals.push(proposalJSON);
+    }
+
+    // polls 
+    var query = `{
+        polls(orderBy: blockCreated, orderDirection: desc) { 
+            creator 
+            pollId
+            blockCreated
+            startDate
+            endDate 
+            multiHash 
+            url
+            cursor
+            slug
+            parameters 
+            content 
+            summary
+            title
+            options
+            discussionLink
+            tags 
+        }
+    }`;
+    const poll_response = await axios.post('https://vote.makerdao.com/api/polling/all-polls', {
+        query: query 
+    },
+    {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+    var allProposals = poll_response.data.polls; 
+
+    for (var i in allProposals) {
+        var proposal = allProposals[i];
+
+        var title = proposal.title;
+        var id = proposal.pollId;
+        var platform = "Maker";
+        var endDate = new Date(proposal.endDate);
+        var currDate = new Date(); 
+        var state = (endDate > currDate) ? "active" : "past";
+        var link = proposal.url;
+        var proposalJSON = {
+            title: title,
+            id: id,
+            platform: platform,
+            state: state.toLowerCase(),
+            link: link,
+            endBlock: endBlock
+        }
+        makerProposals.push(proposalJSON);
+    }
+    return makerProposals;
 }
