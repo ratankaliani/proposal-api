@@ -288,7 +288,7 @@ async function getMakerProposals(blockNumber) {
 
         var title = proposal.title;
         var id = proposal.address;
-        var platform = "Maker Executive";
+        var platform = "Maker";
         var state = "active";
         var link = proposal.proposalLink;
         var endBlock = parseInt(proposal.blockCreated); //TODO
@@ -337,7 +337,7 @@ async function getMakerProposals(blockNumber) {
 
         var title = proposal.title;
         var id = proposal.pollId;
-        var platform = "Maker Poll";
+        var platform = "Maker";
         var endDate = new Date(proposal.endDate);
         var currDate = new Date(); 
         var state = (endDate < currDate) ? "active" : "past";
