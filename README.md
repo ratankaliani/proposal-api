@@ -9,14 +9,6 @@ Add platform title [here](https://github.com/ratankaliani/proposal-api/blob/main
 
 Test in local dev environment to see if the API (localhost:3000/api/proposal) is receiving proposals from the new protocol.
 
-## Modular Changes to API (Medium)
-
-TBD!
-
-### PLEASE CREATE A BRANCH & THEN MAKE A PR AFTER DOING LOCAL TESTING!!
-
-
-
 
 ## Query Parameters
 
@@ -44,16 +36,9 @@ You can start editing the page by modifying `pages/index.js`. The page auto-upda
 
 [API routes] The API can be found at http://localhost:3000/api/proposal
 
-
-
-
-
 # Frontend
 
 TBD!
-
-
-
 
 
 # Deployment
@@ -61,5 +46,3 @@ TBD!
 ## Deploy on Vercel
 
 Currently deployment is at https://proposal-api.vercel.app/
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
