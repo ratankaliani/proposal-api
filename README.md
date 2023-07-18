@@ -1,7 +1,7 @@
 
 # API
 
-## Add Protocols to the API (Easy)
+## Add Protocols to the API
 
 Create a method to query proposals from an API endpoint, [similar to this for Aave](https://github.com/ratankaliani/proposal-api/blob/main/pages/api/proposal.js#L80).
 
